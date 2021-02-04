@@ -6,5 +6,5 @@ test('The NavBar component should render', () => {
     const title = 'Test application';
     render(<NavBar title={title} />);
 
-    expect(screen.getByRole('heading')).toHaveAttribute(title)
+    expect(screen.getByRole('heading')).toHaveTextContent(title)
 })
