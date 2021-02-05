@@ -1,16 +1,18 @@
 import HotelsContext from "../context/HotelsContext";
-import {render, screen} from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import Hotels from "./Hotels";
 import {BrowserRouter} from "react-router-dom";
 
 test('The Hotels component should render', async () => {
+    const mockFunction = jest.fn();
+
     const wrapper = ({children}) => (
         <HotelsContext.Provider
             value={{
                 loading: true,
                 error: '',
                 hotels: [],
-                fetchHotels: jest.fn(),
+                fetchHotels: mockFunction,
             }}
         >
             {children}
@@ -20,6 +22,9 @@ test('The Hotels component should render', async () => {
     render(<Hotels/>, {wrapper});
 
     expect(await screen.findByText('Loading...')).toBeVisible();
+    await waitFor(() => {
+        expect(mockFunction).toHaveBeenCalledTimes(1);
+    })
 })
 
 test('The Hotels component should render a list of hotels', async () => {
